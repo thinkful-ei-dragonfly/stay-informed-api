@@ -36,8 +36,26 @@ const politiciansService = {
         console.log(industries);
       });
   },
+
+  getTopContributors(cid) {
+    const url = `${config.OPEN_SECRETS_BASE_URL}method=candContrib&cid=${cid}&output=json&apikey=${config.OPEN_SECRETS_API_KEY}`;
+
+    return fetch(url)
+      .then(res => res.json())
+      .then(res => {
+        let contributors = [];
+
+        res.response.contributors.contributor.forEach(ind => {
+          contributors.push(ind['@attributes']);
+
+        });
+        console.log(contributors);
+      });
+  },
+
+
 };
 
-console.log(politiciansService.getTopIndustries('N00030780'));
+politiciansService.getTopContributors('N00030780');
 
 module.exports = politiciansService;
