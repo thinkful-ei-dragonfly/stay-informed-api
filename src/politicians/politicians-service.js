@@ -13,6 +13,12 @@ const politiciansService = {
     return fetch(url)
       .then(res => res.json())
       .then(res => {
+
+        console.log({
+          total_donations: res.response.summary['@attributes'].total,
+          spent: res.response.summary['@attributes'].spent,
+          cash_on_hand: res.response.summary['@attributes'].cash_on_hand
+        });
         return {
           total_donations: res.response.summary['@attributes'].total,
           spent: res.response.summary['@attributes'].spent,
@@ -56,6 +62,6 @@ const politiciansService = {
 
 };
 
-politiciansService.getTopContributors('N00030780');
+politiciansService.getContributionTotals('N00030780');
 
 module.exports = politiciansService;
