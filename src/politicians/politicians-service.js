@@ -4,21 +4,11 @@ const fetch = require('node-fetch');
 const politiciansService = {
   //This gets the total contributions and spending by cid #
   getContributionTotals(cid) {
-    const url = `${
-      config.OPEN_SECRETS_BASE_URL
-    }method=candSummary&cid=${cid}&output=json&apikey=${
-      config.OPEN_SECRETS_API_KEY
-    }`;
+    const url = `${config.OPEN_SECRETS_BASE_URL}method=candSummary&cid=${cid}&output=json&apikey=${config.OPEN_SECRETS_API_KEY}`;
 
     return fetch(url)
       .then(res => res.json())
       .then(res => {
-
-        console.log({
-          total_donations: res.response.summary['@attributes'].total,
-          spent: res.response.summary['@attributes'].spent,
-          cash_on_hand: res.response.summary['@attributes'].cash_on_hand
-        });
         return {
           total_donations: res.response.summary['@attributes'].total,
           spent: res.response.summary['@attributes'].spent,
@@ -39,7 +29,7 @@ const politiciansService = {
           industries.push(ind['@attributes']);
 
         });
-        console.log(industries);
+        return industries;
       });
   },
 
@@ -55,13 +45,13 @@ const politiciansService = {
           contributors.push(ind['@attributes']);
 
         });
-        console.log(contributors);
+        return contributors;
       });
   },
 
 
 };
 
-politiciansService.getContributionTotals('N00030780');
+
 
 module.exports = politiciansService;
