@@ -5,21 +5,18 @@ const fetch = require('node-fetch');
 fetch.Promise = global.Promise;
 
 let state = 'CA'
-let districtCode = '01'
+let districtCode = '02'
 
 // create URLs GET endpoint from env
 const senateURL = `https://api.propublica.org/congress/v1/members/senate/${state}/current.json`;
 const houseDistURL = `https://api.propublica.org/congress/v1/members/house/${state}/${districtCode}/current.json`;
-
-const propubAPI = process.env.PROPUBLICA_KEY;
-console.log(propubAPI)
 
 // local server => fetch from API with options, add to DATASTREAM
 propubRouter.get('/api/district/', (req, res) => {
   const reqOptions = {
     method: 'GET',
     headers: {
-      "x-api-key": "JI1WbwsALu2f4m7sFqxYzl8JOddwOvG14MwWSa7P"
+      "x-api-key": `${process.env.PROPUBLICA_API_KEY}`
     }
   }; 
   let dataStream = {};
@@ -37,5 +34,4 @@ propubRouter.get('/api/district/', (req, res) => {
     })
     .catch(houseError => console.log('Error in house request', houseError));
    })
-
 module.exports = propubRouter;
