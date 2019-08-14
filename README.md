@@ -6,16 +6,16 @@ If using user `dunder-mifflin`:
 
 ```bash
 mv example.env .env
-createdb -U dunder-mifflin CHANGE DATABASE NAME
-createdb -U dunder-mifflin CHANGE DATABASE NAME
+createdb -U dunder-mifflin stay-informed
+createdb -U dunder-mifflin stay-informed-test
 ```
 
-If your `postgres_user` has a password be sure to set it in `.env` for all appropriate fields. Or if using a different user, update appropriately.
+If your `dunder-mifflin` user has a password be sure to set it in `.env` for all appropriate fields. Or if using a different user, update appropriately.
 
 ```bash
 npm install
 npm run migrate
-env MIGRATION_DB_NAME=TESTDATABASENAME npm run migrate
+env MIGRATION_DB_NAME=stay-informed-test npm run migrate
 ```
 
 And `npm test` should work at this point

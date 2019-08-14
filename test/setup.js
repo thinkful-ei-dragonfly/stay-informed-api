@@ -6,7 +6,7 @@ process.env.JWT_EXPIRY = '3m' /* TODO affirm expiry time */
 require('dotenv').config()
 
 process.env.TEST_DB_URL = process.env.TEST_DB_URL
-  || "postgresql://USERNAME@localhost/TESTDATABASE"
+  || "postgresql://dunder-mifflin@localhost/stay-informed-test"
 
 const { expect } = require('chai')
 const supertest = require('supertest')
