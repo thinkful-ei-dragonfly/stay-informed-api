@@ -42,6 +42,7 @@ authRouter
       const payload = {
         user_id: dbUser.id,
         name: dbUser.name,
+        address: dbUser.address,
       }
       res.send({
         authToken: AuthService.createJwt(sub, payload),
@@ -56,6 +57,7 @@ authRouter
     const payload = {
       user_id: req.user.id,
       name: req.user.name,
+      address: db.address,
     }
     res.send({
       authToken: AuthService.createJwt(sub, payload),
