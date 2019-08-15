@@ -37,6 +37,15 @@ const RepresentativeService = {
 
         return districtObj;
       });
+  },
+
+  imagesMap(images){
+    let imgArr = images.map(img => {
+      const nameArr = img.name.split(' ');
+      const lastname = nameArr[nameArr.length-1];
+      return {lastname, photoUrl: img.photoUrl};
+    });
+    return imgArr;
   }
 };
 
