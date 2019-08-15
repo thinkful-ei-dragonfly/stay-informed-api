@@ -18,6 +18,14 @@ representativeRouter
     )
       .then(response => {
         stateCode = response.normalizedInput.state.toLowerCase()
+        // only *some* officials have photoUrls. We'll have to do some kind of if statement in React
+        let officialsImages = response.officials.map(official => {
+          return {
+            name: official.name,
+            photoUrl: official.photoUrl
+          }
+        })
+
 
         Object.keys(response.divisions).forEach(item => {
           if (item.includes(`/state:${stateCode}/cd:`)) {
