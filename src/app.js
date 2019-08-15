@@ -26,10 +26,10 @@ app.get('/', (req, res) => {
   res.status(200).send('Hello, server and boilerplate!');
 });
 
-app.use('/', propublicaRouter);
+//app.use('/', propublicaRouter);
 app.use('/api/auth', authRouter);
 app.use('/api/user', userRouter);
-app.use('/api/representatives', representativeRouter)
+app.use('/api/representatives', representativeRouter);
 
 
 app.use(errorHandler);

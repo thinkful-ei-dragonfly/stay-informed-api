@@ -1,53 +1,41 @@
-const express = require('express')
-const path = require('path')
-const RepresentativeService = require('./representative-service')
 
-const representativeRouter = express.Router()
-const jsonBodyParser = express.json()
+const express = require('express');
+const path = require('path');
+const RepresentativeService = require('./representative-service');
+const ProPublicaService = require('../propublica/propublica-service');
+const FinanceService = require('../finances/finances-service');
 
-representativeRouter
-  .post('/', jsonBodyParser, (req, res, next) => {
-    const { address } = req.body
-    // console.log(address);
-    let congressionalDistrict = ''
-    let stateCode
-    let districtCode
+const representativeRouter = express.Router();
+const jsonBodyParser = express.json();
 
-    RepresentativeService.getDistrict(
-      address
-    )
-      .then(response => {
-        stateCode = response.normalizedInput.state.toLowerCase()
-        // only *some* officials have photoUrls. We'll have to do some kind of if statement in React
-        let officialsImages = response.officials.map(official => {
-          return {
-            name: official.name,
-            photoUrl: official.photoUrl
-          }
-        })
+async function getAll(address) {
+  let districtObject = await RepresentativeService.getDistrict(address);
 
+  let representatives = await ProPublicaService.getReps(districtObject.state, districtObject.district);
 
-        Object.keys(response.divisions).forEach(item => {
-          if (item.includes(`/state:${stateCode}/cd:`)) {
-            districtCode = item.split(`/state:${stateCode}/cd:`)[1]
-          }
-        })
-        // Service API call to other APIS
-        congressionalDistrict = stateCode.toUpperCase() + districtCode
-        console.log(congressionalDistrict);
+  async function repsResponse (rep) {
+    const results = rep.results[0]
+    let cid = results.crp_id
 
-        // temporarily sending back state and district
-        res.send({
-          state: stateCode,
-          district: districtCode
-        })
+    let contributionTotals = await FinanceService.getContributionTotals(cid);
+    let topIndustries = await FinanceService.getTopIndustries(cid);
+    let topContributors = await FinanceService.getTopContributors(cid);
+  
+    return {...results, topContributors, topIndustries, contributionTotals};
+  };
+    const reps = representatives.map((rep) => {
+      return repsResponse(rep);
+  });
+  return Promise.all(reps).then(repsArray => ({representatives: repsArray, ...districtObject}))
+}
 
-        // We can perform another RepresentativeService method to request ProPublica/OpenSecrets
-        // and pass along the state and/or district code from this previous call
+representativeRouter.post('/', jsonBodyParser, (req, res, next) => {
+  const { address } = req.body;
 
-      })
-      .catch(next)
-  })
+  getAll(address).then(reps => res.json(reps)).catch(next);
 
+    });
+ 
 
-module.exports = representativeRouter
+module.exports = representativeRouter;
+
