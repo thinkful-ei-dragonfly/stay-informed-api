@@ -23,36 +23,15 @@ const RepresentativeService = {
             districtCode = item.split(`/state:${stateCode}/cd:`)[1];
           }
         });
-        // Service API call to other APIS
-        // congressionalDistrict = stateCode.toUpperCase() + districtCode;
-        // console.log(congressionalDistrict);
 
         let districtObj = {
           state: stateCode,
           district: districtCode
         };
 
-        // temporarily sending back state and district
         return districtObj;
       });
   }
 };
-// const getAll = async (req, res) => {
-//   const districtObject = await RepresentativeService.getDistrict(req.body.address);
-
-//   const representatives = await ProPublicaService.getReps(districtObject.state, districtObject.district);
-
-//   //memberDetails[i].results[0].crp_id
-
-//   await representatives.forEach(rep => {
-//     const cid = rep.results[0].crp_id
-//     const contributionTotals = await FinanceService.getContributionTotals(cid);
-//     const topIndustries = await FinanceService.getTopIndustries(cid);
-//     const topContributors = await FinanceService.getTopContributors(cid);
-//     rep.results.contribs = topContributors;
-//     rep.results.industries = topIndustries;
-//     rep.results.contTotals = contributionTotals;
-//   })
-//   res.json(representatives);
 
 module.exports = RepresentativeService;
