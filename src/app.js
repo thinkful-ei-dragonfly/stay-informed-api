@@ -13,7 +13,7 @@ const userRouter = require('./user/user-router');
 const representativeRouter = require('./representative/representative-router')
 
 
-const propublicaRouter = require('./propublica/propublica-router');
+
 const app = express();
 
 app.use(morgan((NODE_ENV === 'production') ? 'tiny' : 'common', {
@@ -26,7 +26,7 @@ app.get('/', (req, res) => {
   res.status(200).send('Hello, server and boilerplate!');
 });
 
-//app.use('/', propublicaRouter);
+
 app.use('/api/auth', authRouter);
 app.use('/api/user', userRouter);
 app.use('/api/representatives', representativeRouter);
