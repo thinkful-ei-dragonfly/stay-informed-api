@@ -1,7 +1,7 @@
 const config = require('../config');
 const fetch = require('node-fetch');
 
-const politiciansService = {
+const financesService = {
   //This gets the total contributions and spending by cid #
   getContributionTotals(cid) {
     const url = `${config.OPEN_SECRETS_BASE_URL}method=candSummary&cid=${cid}&output=json&apikey=${config.OPEN_SECRETS_API_KEY}`;
@@ -54,4 +54,4 @@ const politiciansService = {
 
 
 
-module.exports = politiciansService;
+module.exports = financesService;
