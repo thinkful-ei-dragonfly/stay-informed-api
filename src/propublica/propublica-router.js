@@ -2,7 +2,7 @@ require('dotenv').config();
 const express = require('express');
 const propubRouter = express.Router();
 const fetch = require('node-fetch');
-fetch.Promise = global.Promise;
+//fetch.Promise = global.Promise;
 
 let state = 'CA';
 let districtCode = '03';
@@ -19,32 +19,27 @@ propubRouter.get('/api/officials/', (req, res) => {
       'x-api-key': `${process.env.PROPUBLICA_API_KEY}`
     }
   };
+
   let dataStream = {};
   fetch(senateURL, reqOptions)
     .then(res => res.json())
     .then(senateRes => {
       dataStream = { senateRes };
-
-      const senator_uri = senateRes.results[0].api_uri;
-      const senator2_uri = senateRes.results[1].api_uri;
-      fetch(senator_uri, reqOptions)
-        .then(memRes => memRes.json())
-        .then(memRes => {
-          dataStream = { ...dataStream, ...memRes };
-
-          fetch(senator2_uri, reqOptions)
-            .then(memResTwo => memResTwo.json())
-            .then(memResTwo => {
-              dataStream = { ...dataStream, ...memResTwo };
-            });
-
-          res.json(dataStream);
+      const urls = [senateRes.results[0].api_uri, senateRes.results[1].api_uri];
+      fetch(houseDistURL, reqOptions)
+        .then(res => res.json())
+        .then(houseRes => {
+          dataStream = { ...dataStream, houseRes };
+          urls.push(houseRes.results[0].api_uri);
         })
-
-        .catch(senateError =>
-          console.log('Error from senate request', senateError)
-        );
-    })
-    .catch(houseError => console.log('Error in house request', houseError));
+        .then(() => {
+          Promise.all(
+            urls.map(url => fetch(url, reqOptions).then(res => res.json()))
+          ).then(memberDetails => {
+            console.log(dataStream);
+            res.json(memberDetails);
+          });
+        });
+    });
 });
 module.exports = propubRouter;
