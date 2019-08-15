@@ -1,7 +1,5 @@
 const fetch = require('node-fetch');
 const config = require('../config');
-const ProPublicaService = require('../propublica/propublica-service');
-const FinanceService = require('../finances/finances-service');
 
 const RepresentativeService = {
   getDistrict(address) {
@@ -18,6 +16,13 @@ const RepresentativeService = {
       .then(response => {
         stateCode = response.normalizedInput.state.toLowerCase();
 
+        let officialsImages = response.officials.map(official => {
+          return {
+            name: official.name,
+            photoUrl: official.photoUrl
+          };
+        });
+
         Object.keys(response.divisions).forEach(item => {
           if (item.includes(`/state:${stateCode}/cd:`)) {
             districtCode = item.split(`/state:${stateCode}/cd:`)[1];
@@ -26,7 +31,8 @@ const RepresentativeService = {
 
         let districtObj = {
           state: stateCode,
-          district: districtCode
+          district: districtCode,
+          officialsImages
         };
 
         return districtObj;
