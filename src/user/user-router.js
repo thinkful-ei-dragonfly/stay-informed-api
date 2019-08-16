@@ -7,9 +7,9 @@ const jsonBodyParser = express.json()
 
 userRouter
   .post('/', jsonBodyParser, async (req, res, next) => {
-    const { password, username, name } = req.body
+    const { password, username, name, address } = req.body
 
-    for (const field of ['name', 'username', 'password'])
+    for (const field of ['name', 'username', 'password', 'address'])
       if (!req.body[field])
         return res.status(400).json({
           error: `Missing '${field}' in request body`
@@ -35,6 +35,7 @@ userRouter
         username,
         password: hashedPassword,
         name,
+        address
       }
 
       const user = await UserService.insertUser(
@@ -42,14 +43,12 @@ userRouter
         newUser
       )
 
-      await UserService.populateUserWords(
-        req.app.get('db'),
-        user.id
-      )
 
       res
         .status(201)
-        .location(path.posix.join(req.originalUrl, `/${user.id}`))
+        // Temporarily commenting this out. I don't think we'll have a /users/1 endpoint in the frontend anyway
+        // .location(path.posix.join(req.originalUrl, `/${user.id}`))j
+        // Also for below, do we need to send a user back?
         .json(UserService.serializeUser(user))
     } catch(error) {
       next(error)
