@@ -1,7 +1,7 @@
 const app = require('../src/app')
 const helpers = require('./test-helpers')
 
-// describe('Protected Endpoints', function () {
+// describe.skip('Protected Endpoints', function () {
 //   let db
 
 //   const testUsers = helpers.makeUsersArray()
@@ -19,11 +19,15 @@ const helpers = require('./test-helpers')
 
 //   afterEach('cleanup', () => helpers.cleanTables(db))
 
-  
+//   beforeEach('insert users, languages and words', () => {
+//     return helpers.seedUsersLanguagesWords(
+//       db,
+//       testUsers,
+//       testLanguages,
+//       testWords,
+//     )
+//   })
 
- /* 
-   TODO: CHANGE TO OUR NEW PROTECTED ENDPOINTS
-  */
 //   const protectedEndpoints = [
 //     {
 //       name: 'GET /api/language',
