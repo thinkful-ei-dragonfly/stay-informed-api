@@ -14,6 +14,7 @@ const RepresentativeService = {
         return res.json();
       })
       .then(response => {
+
         stateCode = response.normalizedInput.state.toLowerCase();
 
         let officialsImages = response.officials.map(official => {
