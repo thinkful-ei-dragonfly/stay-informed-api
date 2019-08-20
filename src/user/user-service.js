@@ -17,12 +17,11 @@ const UserService = {
       .returning('*')
       .then(([user]) => user);
   },
-  updateUser(db, user_id, updatedUser) {
-    console.log('here')
+  updateUser(db, user_id, newAddress) {
+    console.log('WE ARE IN updateUser HERE    ' + newAddress)
     return db('user')
       .where({id: user_id})
-      .update({updatedUser})
-      .returning('*');
+      .update({address: newAddress});
   },
   validatePassword(password) {
     if (password.length < 8) {

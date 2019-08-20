@@ -20,30 +20,23 @@ userRouter
 
       if (passwordError)
         return res.status(400).json({ error: passwordError })
-
       const hasUserWithUserName = await UserService.hasUserWithUserName(
         req.app.get('db'),
         username
       )
-
       if (hasUserWithUserName)
         return res.status(400).json({ error: `Username already taken` })
-
       const hashedPassword = await  UserService.hashPassword(password)
-
       const newUser = {
         username,
         password: hashedPassword,
         name,
         address
       }
-
       const user = await UserService.insertUser(
         req.app.get('db'),
         newUser
       )
-
-
       res
         .status(201)
         // Temporarily commenting this out. I don't think we'll have a /users/1 endpoint in the frontend anyway
@@ -55,19 +48,20 @@ userRouter
     }
   })
   .patch('/', requireAuth, jsonBodyParser, async (req, res, next) => {
-    const updatedUser = req.body
-
-    if (!updatedUser)
-    return res.status(400).json({
-      error: `Missing User in request body`
-    })
+    
+    // if (!updatedUser)
+    // return res.status(400).json({
+    //   error: `Missing User in request body`
+    // })
 
     try {
       const updatedUser = await UserService.updateUser(
       req.app.get('db'),
-      updatedUser.id,
-      updatedUser
-  )
+      req.body.id,
+      req.body.newAddress
+      )
+      console.log(updatedUser)
+ 
   res.status(204)
       
     }
