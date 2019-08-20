@@ -2,6 +2,7 @@ const knex = require('knex')
 const bcrypt = require('bcryptjs')
 const jwt = require('jsonwebtoken')
 const config = require('../src/config');
+const expectedResponse = require('./rep-test-data');
 
 /**
  * create a knex instance connected to postgres
@@ -114,4 +115,5 @@ module.exports = {
   makeAuthHeader,
   cleanTables,
   seedUsers,
+  expectedResponse
 }

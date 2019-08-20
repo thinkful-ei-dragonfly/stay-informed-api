@@ -34,6 +34,10 @@ async function getAll(address) {
 representativeRouter.post('/', jsonBodyParser, (req, res, next) => {
   const { address } = req.body;
 
+  if(!address) {
+    return res.status(400).json({error: 'Must include address in request body'});
+  }
+
   getAll(address).then(reps => res.json(reps)).catch(next);
 
 });

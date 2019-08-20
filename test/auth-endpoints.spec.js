@@ -71,9 +71,9 @@ describe('Auth Endpoints', function () {
         username: testUser.username,
         password: testUser.password,
       }
-      // const expectedToken = jwt.sign({ user_id: user.id }, secret, {
+      // const expectedToken = jwt.sign({ user_id: testUser.id }, process.env.JWT_SECRET, {
       //   subject: testUser.username,
-      //   expiresIn: config.JWT_EXPIRY,
+      //   expiresIn: process.env.JWT_EXPIRY,
       //   algorithm: 'HS256',
       // })
       return supertest(app)
