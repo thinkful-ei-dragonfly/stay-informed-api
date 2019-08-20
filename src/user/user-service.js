@@ -18,6 +18,7 @@ const UserService = {
       .then(([user]) => user);
   },
   updateUser(db, user_id, updatedUser) {
+    console.log('here')
     return db('user')
       .where({id: user_id})
       .update({updatedUser})

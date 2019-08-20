@@ -1,5 +1,6 @@
 const express = require('express')
 const UserService = require('./user-service')
+const { requireAuth } = require('../middleware/jwt-auth')
 
 const userRouter = express.Router()
 const jsonBodyParser = express.json()
@@ -53,26 +54,27 @@ userRouter
       next(error)
     }
   })
-  .patch('/:id'), jsonBodyParser, async (req, res, next) => {
+  .patch('/', requireAuth, jsonBodyParser, async (req, res, next) => {
+    const updatedUser = req.body
 
-    const {newAddress} = req.body
-    
-    if (!newAddress)
+    if (!updatedUser)
     return res.status(400).json({
-      error: `Missing address in request body`
+      error: `Missing User in request body`
     })
+
     try {
-      const newAddress = await UserService.updateUser(
+      const updatedUser = await UserService.updateUser(
       req.app.get('db'),
-      eq.params.id,
-      newAddress
+      updatedUser.id,
+      updatedUser
   )
+  res.status(204)
       
     }
     catch(error){
       next(error)
     }
 
-  }
+  })
 
 module.exports = userRouter
