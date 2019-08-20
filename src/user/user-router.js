@@ -54,11 +54,24 @@ userRouter
     }
   })
   .patch('/:id'), jsonBodyParser, async (req, res, next) => {
+
     const {newAddress} = req.body
+    
     if (!newAddress)
     return res.status(400).json({
       error: `Missing address in request body`
     })
+    try {
+      const newAddress = await UserService.updateUser(
+      req.app.get('db'),
+      eq.params.id,
+      newAddress
+  )
+      
+    }
+    catch(error){
+      next(error)
+    }
 
   }
 
