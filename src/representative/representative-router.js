@@ -13,26 +13,6 @@ async function getAll(address) {
 
   let representatives = await ProPublicaService.getReps(districtObject.state, districtObject.district);
 
-  //creates an array of images maps over them and gets the last name from the full name and sets it as a parameter
-  //let imgArr = RepresentativeService.imagesMap(districtObject.officialsImages);
-
-  // representatives.forEach(rep => {
-
-  //   const large = `https://theunitedstates.io/images/congress/450x550/${rep.member_id}.jpg`
-
-  //   const small = `https://theunitedstates.io/images/congress/225x275/${rep.member_id}.jpg`
-
-  //   //get last nome of the representative from the representatives array
-  //   // const lastname = rep.results[0].last_name.toLowerCase();
-  //   //match that last name with the last name on the images array
-  //   // const repImage = imgArr.find(img => img.lastname.toLowerCase() === lastname).photoUrl;
-  //   //set the photoUpl on each rep to the photoUrl from the google civic Api
-  //   rep.results[0].photoUrl = small;
-
-  //   rep.results[0].largePhotoUrl = large;
-
-  // });
-
   async function repsResponse (rep) {
     const results = rep.results[0]
     const photoUrl = `https://theunitedstates.io/images/congress/450x550/${results.member_id}.jpg`
@@ -53,6 +33,10 @@ async function getAll(address) {
 
 representativeRouter.post('/', jsonBodyParser, (req, res, next) => {
   const { address } = req.body;
+
+  if(!address) {
+    return res.status(400).json({error: 'Must include address in request body'});
+  }
 
   getAll(address).then(reps => res.json(reps)).catch(next);
 
