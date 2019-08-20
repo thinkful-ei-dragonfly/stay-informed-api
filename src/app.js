@@ -1,6 +1,3 @@
-
-
-
 require('dotenv').config();
 const express = require('express');
 const morgan = require('morgan');
@@ -25,6 +22,7 @@ app.use(helmet());
 app.use('/api/auth', authRouter);
 app.use('/api/user', userRouter);
 app.use('/api/representatives', representativeRouter);
+app.use('api/news', newsRouter)
 
 
 app.use(errorHandler);
