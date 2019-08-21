@@ -1,11 +1,36 @@
 const express = require('express');
 const UserService = require('./user-service');
 const { requireAuth } = require('../middleware/jwt-auth');
+const jwt = require('jsonwebtoken');
 
 const userRouter = express.Router();
 const jsonBodyParser = express.json();
 
 userRouter
+  .get('/:id', requireAuth, jsonBodyParser, async (req, res, next) => {
+    const id = req.params.id;
+
+    try {
+      const authToken = req.get('Authorization') || '';
+      let bearerToken;
+      if (!authToken.toLowerCase().startsWith('bearer ')) {
+        return res.status(401).json({ error: 'Missing bearer token' });
+      } else {
+        bearerToken = authToken.slice(7, authToken.length);
+      }
+      const getUserWithId = await UserService.getUserAddressById(
+        req.app.get('db'),
+        id
+      );
+      const userId = jwt.decode(bearerToken).user_id;
+      if (getUserWithId && userId == id)
+        return res.status(200).json(getUserWithId);
+      return res.status(400).json({ error: 'you are not authorized' });
+    } catch (error) {
+      next(error);
+    }
+  })
+
   .post('/', jsonBodyParser, async (req, res, next) => {
     const { password, username, name, address } = req.body;
 
@@ -43,14 +68,32 @@ userRouter
       next(error);
     }
   })
-  .patch('/', requireAuth, jsonBodyParser, async (req, res, next) => {
+
+  .patch('/:id', requireAuth, jsonBodyParser, async (req, res, next) => {
+    const id = req.params.id;
     try {
-      const updatedUser = await UserService.updateUser(
+      const authToken = req.get('Authorization') || '';
+      let bearerToken;
+      if (!authToken.toLowerCase().startsWith('bearer ')) {
+        return res.status(401).json({ error: 'Missing bearer token' });
+      } else {
+        bearerToken = authToken.slice(7, authToken.length);
+      }
+      const getUserWithId = await UserService.getUserAddressById(
         req.app.get('db'),
-        req.body.id,
-        req.body.newAddress
+        id
       );
-      res.status(204).json();
+      const userId = jwt.decode(bearerToken).user_id;
+      if (getUserWithId && userId == id) {
+        const updatedUser = await UserService.updateUser(
+          req.app.get('db'),
+          req.params.id,
+          req.body.newAddress
+        );
+        return res.status(201).json(updatedUser);
+      } else {
+        return res.status(400).json({ error: 'you are not authorized' });
+      }
     } catch (error) {
       next(error);
     }
