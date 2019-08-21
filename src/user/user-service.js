@@ -18,11 +18,9 @@ const UserService = {
       .then(([user]) => user);
   },
   updateUser(db, user_id, newAddress) {
-    console.log('==== UpdateUser output ===== \nuser_id: ' + user_id);
-    console.log('newAddress: ' + newAddress);
     return db('user')
-      .where({id: user_id})
-      .update({address: newAddress})
+      .where({ id: user_id })
+      .update({ address: newAddress });
   },
   validatePassword(password) {
     if (password.length < 8) {
