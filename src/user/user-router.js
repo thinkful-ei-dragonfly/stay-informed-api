@@ -1,6 +1,8 @@
 const express = require('express');
 const UserService = require('./user-service');
 const { requireAuth } = require('../middleware/jwt-auth');
+const jwt = require('jsonwebtoken')
+
 
 const userRouter = express.Router();
 const jsonBodyParser = express.json();
@@ -10,15 +12,25 @@ userRouter
     const id = req.params.id
     
     try{
-      
-      const getUserWithId = await UserService.getUserById(
+      const authToken = req.get('Authorization') || ''
+      let bearerToken
+      if (!authToken.toLowerCase().startsWith('bearer ')) {
+        return res.status(401).json({ error: 'Missing bearer token' })
+      } else {
+        bearerToken = authToken.slice(7, authToken.length)
+      }
+      const getUserWithId = await UserService.getUserAddressById(
         req.app.get('db'),
-        id,
+        id
       )
-      console.log(getUserWithId)
-      if(getUserWithId)
-        return res.status(200).json(getUserWithId)
 
+      const userId = jwt.decode(bearerToken).user_id
+      console.log(userId)
+
+      if(getUserWithId && userId == id)
+        return res.status(200).json(getUserWithId)
+        
+        return res.status(400).json({error: 'you are not authorized'})
 
     }catch (error){
       next(error)
@@ -68,6 +80,7 @@ userRouter
   // Portfolio = show our ability to do either?
   .patch('/:id', requireAuth, jsonBodyParser, async (req, res, next) => {
     try {
+
       const updatedUser = await UserService.updateUser(
         req.app.get('db'),
         req.params.id,
