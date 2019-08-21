@@ -25,7 +25,6 @@ userRouter
       )
 
       const userId = jwt.decode(bearerToken).user_id
-      console.log(userId)
 
       if(getUserWithId && userId == id)
         return res.status(200).json(getUserWithId)
@@ -79,14 +78,32 @@ userRouter
   // + check jwt token?
   // Portfolio = show our ability to do either?
   .patch('/:id', requireAuth, jsonBodyParser, async (req, res, next) => {
+    const id = req.params.id
     try {
-
-      const updatedUser = await UserService.updateUser(
+      const authToken = req.get('Authorization') || ''
+      let bearerToken
+      if (!authToken.toLowerCase().startsWith('bearer ')) {
+        return res.status(401).json({ error: 'Missing bearer token' })
+      } else {
+        bearerToken = authToken.slice(7, authToken.length)
+      }
+      const getUserWithId = await UserService.getUserAddressById(
         req.app.get('db'),
-        req.params.id,
-        req.body.newAddress
-      );
-      res.status(204).json(updatedUser);
+        id
+      )
+
+      const userId = jwt.decode(bearerToken).user_id
+
+      if(getUserWithId && userId == id) {
+        const updatedUser = await UserService.updateUser(
+          req.app.get('db'),
+          req.params.id,
+          req.body.newAddress
+        );
+        return res.status(201).json(updatedUser);
+      } else {
+        return res.status(400).json({error: 'you are not authorized'})
+      }
     } catch (error) {
       next(error);
     }

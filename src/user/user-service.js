@@ -33,7 +33,8 @@ const UserService = {
   updateUser(db, user_id, newAddress) {
     return db('user')
       .where({ id: user_id })
-      .update({ address: newAddress });
+      .update({ address: newAddress })
+      .returning('*')
   },
   validatePassword(password) {
     if (password.length < 8) {
