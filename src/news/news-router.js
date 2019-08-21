@@ -11,27 +11,27 @@ const jsonBodyParser = express.json();
 // TODO still use the module? could perhaps handle ourselves.
 newsRouter
   .post('/', jsonBodyParser, (req, res, next) => {
-    const { senator1, senator2, representative1 } = req.body;
-    console.log('senator1: ', senator1)
+    const { senator1_first, senator1_last, senator2_first, senator2_last, representative1_first, representative1_last } = req.body;
+    // console.log('senator1: ', senator1)
     // join all politican names in order to make an efficient fetch and collect articles about all
     // TODO consider only last names? test.
     // Fetch requires URL encoded, but I think module is handling
-    const queryString = `${senator1} ${senator2} ${representative1}`;
+    const queryString = `(${senator1_first} AND ${senator1_last}) OR (${senator2_first} AND ${senator2_last}) OR (${representative1_first} AND ${representative1_last})`;
     console.log('queryString: ', queryString)
-    const months = [
-      'January',
-      'February',
-      'March',
-      'April',
-      'May',
-      'June',
-      'July',
-      'August',
-      'September',
-      'October',
-      'November',
-      'December',
-    ];
+    // const months = [
+    //   'January',
+    //   'February',
+    //   'March',
+    //   'April',
+    //   'May',
+    //   'June',
+    //   'July',
+    //   'August',
+    //   'September',
+    //   'October',
+    //   'November',
+    //   'December',
+    // ];
 
     // get today's date in string form YYYY-MM-DD
     // let dateObj = new Date();
@@ -66,7 +66,6 @@ newsRouter
       .then(response => {
         // console.log('RESPONSE: ', response);
         // let resWithSubject = newsService.findName(response.articles);
-        
         return res.status(201).send(response);
       })
       .catch(error => {
@@ -74,12 +73,5 @@ newsRouter
         return res.json({error: error.message})
       });
   })
-
-
-  // .catch(error => {
-  //   res
-  //     .status(400)
-  //     .send({ message: 'oops! Something went wrong with news fetch.' });
-  // });
 
 module.exports = newsRouter;
