@@ -66,7 +66,7 @@ newsRouter
       .then(response => {
         // console.log('RESPONSE: ', response);
         // let resWithSubject = newsService.findName(response.articles);
-        return res.status(201).send(response);
+        return res.status(201).json(response);
       })
       .catch(error => {
         console.error(error.message)
