@@ -6,6 +6,25 @@ const userRouter = express.Router();
 const jsonBodyParser = express.json();
 
 userRouter
+  .get('/:id', requireAuth, jsonBodyParser, async (req, res, next) => {
+    const id = req.params.id
+    
+    try{
+      
+      const getUserWithId = await UserService.getUserById(
+        req.app.get('db'),
+        id,
+      )
+      console.log(getUserWithId)
+      if(getUserWithId)
+        return res.status(200).json(getUserWithId)
+
+
+    }catch (error){
+      next(error)
+    }
+  })
+ 
   .post('/', jsonBodyParser, async (req, res, next) => {
     const { password, username, name, address } = req.body;
 
@@ -43,14 +62,18 @@ userRouter
       next(error);
     }
   })
-  .patch('/', requireAuth, jsonBodyParser, async (req, res, next) => {
+
+  //Make user send password
+  // + check jwt token?
+  // Portfolio = show our ability to do either?
+  .patch('/:id', requireAuth, jsonBodyParser, async (req, res, next) => {
     try {
       const updatedUser = await UserService.updateUser(
         req.app.get('db'),
-        req.body.id,
+        req.params.id,
         req.body.newAddress
       );
-      res.status(204).json();
+      res.status(204).json(updatedUser);
     } catch (error) {
       next(error);
     }
