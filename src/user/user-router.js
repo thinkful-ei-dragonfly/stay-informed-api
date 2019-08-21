@@ -1,41 +1,36 @@
 const express = require('express');
 const UserService = require('./user-service');
 const { requireAuth } = require('../middleware/jwt-auth');
-const jwt = require('jsonwebtoken')
-
+const jwt = require('jsonwebtoken');
 
 const userRouter = express.Router();
 const jsonBodyParser = express.json();
 
 userRouter
   .get('/:id', requireAuth, jsonBodyParser, async (req, res, next) => {
-    const id = req.params.id
-    
-    try{
-      const authToken = req.get('Authorization') || ''
-      let bearerToken
+    const id = req.params.id;
+
+    try {
+      const authToken = req.get('Authorization') || '';
+      let bearerToken;
       if (!authToken.toLowerCase().startsWith('bearer ')) {
-        return res.status(401).json({ error: 'Missing bearer token' })
+        return res.status(401).json({ error: 'Missing bearer token' });
       } else {
-        bearerToken = authToken.slice(7, authToken.length)
+        bearerToken = authToken.slice(7, authToken.length);
       }
       const getUserWithId = await UserService.getUserAddressById(
         req.app.get('db'),
         id
-      )
-
-      const userId = jwt.decode(bearerToken).user_id
-
-      if(getUserWithId && userId == id)
-        return res.status(200).json(getUserWithId)
-        
-        return res.status(400).json({error: 'you are not authorized'})
-
-    }catch (error){
-      next(error)
+      );
+      const userId = jwt.decode(bearerToken).user_id;
+      if (getUserWithId && userId == id)
+        return res.status(200).json(getUserWithId);
+      return res.status(400).json({ error: 'you are not authorized' });
+    } catch (error) {
+      next(error);
     }
   })
- 
+
   .post('/', jsonBodyParser, async (req, res, next) => {
     const { password, username, name, address } = req.body;
 
@@ -74,27 +69,22 @@ userRouter
     }
   })
 
-  //Make user send password
-  // + check jwt token?
-  // Portfolio = show our ability to do either?
   .patch('/:id', requireAuth, jsonBodyParser, async (req, res, next) => {
-    const id = req.params.id
+    const id = req.params.id;
     try {
-      const authToken = req.get('Authorization') || ''
-      let bearerToken
+      const authToken = req.get('Authorization') || '';
+      let bearerToken;
       if (!authToken.toLowerCase().startsWith('bearer ')) {
-        return res.status(401).json({ error: 'Missing bearer token' })
+        return res.status(401).json({ error: 'Missing bearer token' });
       } else {
-        bearerToken = authToken.slice(7, authToken.length)
+        bearerToken = authToken.slice(7, authToken.length);
       }
       const getUserWithId = await UserService.getUserAddressById(
         req.app.get('db'),
         id
-      )
-
-      const userId = jwt.decode(bearerToken).user_id
-
-      if(getUserWithId && userId == id) {
+      );
+      const userId = jwt.decode(bearerToken).user_id;
+      if (getUserWithId && userId == id) {
         const updatedUser = await UserService.updateUser(
           req.app.get('db'),
           req.params.id,
@@ -102,7 +92,7 @@ userRouter
         );
         return res.status(201).json(updatedUser);
       } else {
-        return res.status(400).json({error: 'you are not authorized'})
+        return res.status(400).json({ error: 'you are not authorized' });
       }
     } catch (error) {
       next(error);
