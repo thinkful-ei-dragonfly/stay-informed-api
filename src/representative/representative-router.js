@@ -11,7 +11,16 @@ const jsonBodyParser = express.json();
 async function getAll(address) {
   let districtObject = await RepresentativeService.getDistrict(address);
 
+  if(!districtObject.state || !districtObject.district) {
+    //might need to throw new error and let it fall through to the catch block.
+    throw new Error('District not found from given address');
+  }
+
   let representatives = await ProPublicaService.getReps(districtObject.state, districtObject.district);
+
+  if(!representatives){
+    throw new Error("Representatives not found");
+  }
 
   async function repsResponse (rep) {
     const results = rep.results[0]
