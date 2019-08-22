@@ -12,7 +12,7 @@ async function getAll(address) {
 
   let districtObject = await RepresentativeService.getDistrict(address);
 
-  if(!districtObject.state || !districtObject.district) {
+  if(!districtObject || !districtObject.state || !districtObject.district) {
     throw new Error("We couldn't find your district");
   }
 
