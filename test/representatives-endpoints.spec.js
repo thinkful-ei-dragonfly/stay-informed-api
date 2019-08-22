@@ -4,6 +4,7 @@ const helpers = require('./test-helpers');
 
 describe('Representative Endpoints', function() {
   const testAddress = '2122 Blazing Star Drive, Tipp City, OH 45371';
+  //Increasing the timeout because the three chained api calls take some time.
   this.timeout(10000);
   describe(`POST /api/representatives`, () => { 
     it(`responds 400 and with correct error when address key provided but no value`, () => {

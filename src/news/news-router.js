@@ -16,6 +16,10 @@ newsRouter.post('/', jsonBodyParser, (req, res, next) => {
     representative1_first,
     representative1_last,
   } = req.body;
+
+  if(!senator1_first && !senator1_last && !senator2_first && !senator2_last && !representative1_first && !representative1_last){
+    return res.status(400).json({error: 'No representatives recieved to find news'});
+  }
   // build custom search query to only pull exact match for full name for each representative
   const queryString = `(${senator1_first} AND ${senator1_last}) OR 
   (${senator2_first} AND ${senator2_last}) OR (${representative1_first} AND ${representative1_last})`;
