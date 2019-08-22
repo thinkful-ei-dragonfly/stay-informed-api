@@ -9,7 +9,12 @@ const representativeRouter = express.Router();
 const jsonBodyParser = express.json();
 
 async function getAll(address) {
+
   let districtObject = await RepresentativeService.getDistrict(address);
+
+  if(!districtObject.state || !districtObject.district) {
+    throw new Error("We couldn't find your district");
+  }
 
   let representatives = await ProPublicaService.getReps(districtObject.state, districtObject.district);
 
