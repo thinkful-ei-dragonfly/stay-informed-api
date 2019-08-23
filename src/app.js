@@ -12,7 +12,7 @@ const newsRouter = require('./news/news-router')
 const representativeRouter = require('./representative/representative-router')
 
 var corsOptions = {
-  origin: 'https://stay-informed-app.now.sh/dashboard',
+  origin: 'https://stay-informed-app.now.sh/',
   optionsSuccessStatus: 200 // some legacy browsers (IE11, various SmartTVs) choke on 204
 }
 
