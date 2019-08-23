@@ -11,28 +11,23 @@ const userRouter = require('./user/user-router');
 const newsRouter = require('./news/news-router')
 const representativeRouter = require('./representative/representative-router')
 
-
+var corsOptions = {
+  origin: 'https://stay-informed-app.now.sh/dashboard',
+  optionsSuccessStatus: 200 // some legacy browsers (IE11, various SmartTVs) choke on 204
+}
 
 const app = express();
 
 app.use(morgan((NODE_ENV === 'production') ? 'tiny' : 'common', {
   skip: () => NODE_ENV === 'test',
 }));
-app.use(cors());
+app.use(cors(corsOptions));
 app.use(helmet());
 
-app.use(function(req, res, next) {
-  res.header('Access-Control-Allow-Origin', '*');
-  res.header('Access-Control-Allow-Credentials', true);
-  res.header('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE,OPTIONS');
-  res.header('Access-Control-Allow-Headers', 'Origin,X-Requested-With,Content-Type,Accept,content-type,application/json');
-  next();
-});
-
-app.use('/api/auth', authRouter);
-app.use('/api/user', userRouter);
-app.use('/api/representatives', representativeRouter);
-app.use('/api/news', newsRouter);
+app.use('/api/auth', cors(corsOptions), authRouter);
+app.use('/api/user', cors(corsOptions), userRouter);
+app.use('/api/representatives', cors(corsOptions), representativeRouter);
+app.use('/api/news', cors(corsOptions), newsRouter);
 
 app.get('/', (req, res) => {
   res.send('Hello, world!');
