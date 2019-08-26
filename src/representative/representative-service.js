@@ -17,12 +17,12 @@ const RepresentativeService = {
 
         stateCode = response.normalizedInput.state.toLowerCase();
 
-        let officialsImages = response.officials.map(official => {
-          return {
-            name: official.name,
-            photoUrl: official.photoUrl
-          };
-        });
+        // let officialsImages = response.officials.map(official => {
+        //   return {
+        //     name: official.name,
+        //     photoUrl: official.photoUrl
+        //   };
+        // });
 
         Object.keys(response.divisions).forEach(item => {
           if (item.includes(`/state:${stateCode}/cd:`)) {
@@ -33,7 +33,7 @@ const RepresentativeService = {
         let districtObj = {
           state: stateCode,
           district: districtCode,
-          officialsImages
+          // officialsImages
         };
 
         return districtObj;
