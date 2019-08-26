@@ -11,10 +11,6 @@ const newsRouter = require('./news/news-router')
 const representativeRouter = require('./representative/representative-router');
 const financeRouter = require('../src/finances/finances-router');
 
-// var corsOptions = {
-//   origin: 'https://stay-informed-app.now.sh',
-//   optionsSuccessStatus: 200 // some legacy browsers (IE11, various SmartTVs) choke on 204
-// };
 
 const app = express();
 
@@ -29,6 +25,7 @@ app.use('/api/user', userRouter);
 app.use('/api/representatives', representativeRouter);
 app.use('/api/news', newsRouter);
 app.use('/api/finances', financeRouter);
+
 
 app.get('/', (req, res) => {
   res.send('Hello, world!');
