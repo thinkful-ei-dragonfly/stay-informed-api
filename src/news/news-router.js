@@ -28,7 +28,8 @@ newsRouter.post('/', jsonBodyParser, (req, res, next) => {
   // Remove other unrelated sites that commonly give false positives
   const excludeDomains = `gizmodo.com, cnet.com, techcrunch.com, businessinsider.com, usatoday.com, 
     insider.com, thedrive.com, rockpapershotgun.com, marginalrevolution.com, marketwatch.com, 
-    mapleleafshotstove.com, androidcentral.com, bnnbloomberg.ca, venturebeat.com, slashdot.org`;
+    mapleleafshotstove.com, androidcentral.com, bnnbloomberg.ca, venturebeat.com, slashdot.org
+    mashable.com espn.com thenextweb.com screenrant.com indianexpress.com windowscentral.com mcsweeneys.net`;
 
   newsapi.v2
     .everything({
