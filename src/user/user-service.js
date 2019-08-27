@@ -1,5 +1,6 @@
 const bcrypt = require('bcryptjs');
 const xss = require('xss');
+const RepresentativeService = require('../representative/representative-service');
 
 const REGEX_UPPER_LOWER_NUMBER_SPECIAL = /(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#\$%\^&])[\S]+/;
 
@@ -7,15 +8,14 @@ const UserService = {
   getUserAddressById(db, user_id) {
     return db('user')
       .select('address')
-      .where({id: user_id});
+      .where({ id: user_id });
   },
-
 
   hasUserWithUserId(db, user_id) {
     return db('user')
       .where({ user_id })
       .first()
-      .then(user_id => !!user_id)
+      .then(user_id => !!user_id);
   },
   hasUserWithUserName(db, username) {
     return db('user')
@@ -34,8 +34,19 @@ const UserService = {
     return db('user')
       .where({ id: user_id })
       .update({ address: newAddress })
-      .returning('*')
+      .returning('*');
   },
+
+  validateAddress(address) {
+    return RepresentativeService.getDistrict(address).then(districtObj => {
+      console.log('districtObj', districtObj);
+      if (!districtObj || !districtObj.state || !districtObj.district) {
+        return 'We couldn\'t find your district, check your address and try again';
+      }
+      return null;
+    });
+  },
+
   validatePassword(password) {
     if (password.length < 8) {
       return 'Password be longer than 8 characters';

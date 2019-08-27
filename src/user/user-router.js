@@ -57,6 +57,10 @@ userRouter
         name,
         address
       };
+      const districtError = await UserService.validateAddress(address)
+
+      if(districtError) return res.status(400).json({ error: districtError });
+
       const user = await UserService.insertUser(req.app.get('db'), newUser);
       res
         .status(201)
@@ -79,6 +83,16 @@ userRouter
       } else {
         bearerToken = authToken.slice(7, authToken.length);
       }
+
+      console.log('newaddress', req.body.newAddress);
+
+      const districtError = await UserService.validateAddress(req.body.newAddress)
+      
+      console.log(districtError);
+      if(districtError) {
+        return res.status(400).json({ error: districtError });
+      }
+
       const getUserWithId = await UserService.getUserAddressById(
         req.app.get('db'),
         id
