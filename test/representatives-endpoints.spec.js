@@ -18,7 +18,7 @@ describe('Representative Endpoints', function() {
         .post('/api/representatives')
         .expect(400, {error: 'Must include address in request body'});
     });
-    it.only(`responds 200 and with representative data`, () => {
+    it(`responds 200 and with representative data`, () => {
       return supertest(app)
         .post('/api/representatives')
         .send({address:testAddress})
