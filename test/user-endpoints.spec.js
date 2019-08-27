@@ -131,7 +131,21 @@ describe('User Endpoints', function() {
         .expect(400, { error: `Username already taken` });
     });
 
+    it(`responds 400 'We can't find your district' when bad address is sent`, () => {
+      const badAddressUser = {
+        username: 'TestUserName1234',
+        password: '11AAaa!!',
+        name: 'test name',
+        address: '2122 Blazing Star Drive Pluto MW 99999'
+      };
+      return supertest(app)
+        .post('/api/user')
+        .send(badAddressUser)
+        .expect(400, { error: `We couldn't find your district, check your address and try again` });
+    });
+
     describe(`Given a valid user`, () => {
+      this.timeout(5000);
       it(`responds 201, serialized user with no password`, () => {
         const newUser = {
           username: 'test username',
@@ -177,6 +191,34 @@ describe('User Endpoints', function() {
                 expect(compareMatch).to.be.true;
               })
           );
+      });
+    });
+  });
+  describe(`PATCH /api/user/:id`, () => {
+    beforeEach('insert users', () => helpers.seedUsers(db, testUsers));
+
+    it(`responds 400 'We can't find your district' when bad address is sent`, () => {
+      const newAddress = '2122 Blazing Star Drive Pluto MW 99999'
+
+      return supertest(app)
+        .patch('/api/user/1')
+        .set('Authorization', helpers.makeAuthHeader(testUser))
+        .send({...testUser, newAddress})
+        .expect(400, { error: `We couldn't find your district, check your address and try again` });
+    });
+    describe(`Given a valid new address`, () => {
+      it(`responds 201 and with the update user`, () => {
+        const newAddress = '22601 s 110th street hickman ne 68372'
+  
+        return supertest(app)
+          .patch('/api/user/1')
+          .set('Authorization', helpers.makeAuthHeader(testUser))
+          .send({...testUser, newAddress})
+          .expect(201).then(res =>{
+            expect(res.body[0].username).to.eql(testUser.username);
+            expect(res.body[0].user_id).to.eql(testUser.user_id);
+            expect(res.body[0].address).to.eql(newAddress);
+          })
       });
     });
   });

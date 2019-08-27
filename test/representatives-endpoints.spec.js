@@ -34,9 +34,6 @@ describe('Representative Endpoints', function() {
             expect(rep.first_name).to.eql(helpers.expectedResponse.representatives[idx].first_name);
             expect(rep.photoUrl).to.eql(helpers.expectedResponse.representatives[idx].photoUrl);
             expect(rep.smallPhotoUrl).to.eql(helpers.expectedResponse.representatives[idx].smallPhotoUrl);
-            //expect(rep.topContributors).to.eql(helpers.expectedResponse.representatives[idx].topContributors);
-            //expect(rep.topIndrustries).to.eql(helpers.expectedResponse.representatives[idx].topIndrustries);
-            //expect(rep.contributionTotals).to.eql(helpers.expectedResponse.representatives[idx].contributionTotals);
           });
 
         })
