@@ -9,7 +9,12 @@ const representativeRouter = express.Router();
 const jsonBodyParser = express.json();
 
 async function getAll(address) {
+
   let districtObject = await RepresentativeService.getDistrict(address);
+
+  if(!districtObject || !districtObject.state || !districtObject.district) {
+    throw new Error("We couldn't find your district");
+  }
 
   let representatives = await ProPublicaService.getReps(districtObject.state, districtObject.district);
 
@@ -17,18 +22,18 @@ async function getAll(address) {
     const results = rep.results[0]
     const photoUrl = `https://theunitedstates.io/images/congress/450x550/${results.member_id}.jpg`
     const smallPhotoUrl = `https://theunitedstates.io/images/congress/225x275/${results.member_id}.jpg`
-    let cid = results.crp_id
-    let contributionTotals = await FinanceService.getContributionTotals(cid);
-    let topIndustries = await FinanceService.getTopIndustries(cid);
-    let topContributors = await FinanceService.getTopContributors(cid);
+    // let cid = results.crp_id
+    // let contributionTotals = await FinanceService.getContributionTotals(cid);
+    // let topIndustries = await FinanceService.getTopIndustries(cid);
+    // let topContributors = await FinanceService.getTopContributors(cid);
     
-    return {...results, photoUrl, smallPhotoUrl, topContributors, topIndustries, contributionTotals};
+    return {...results, photoUrl, smallPhotoUrl};
   };
     const reps = representatives.map((rep) => {
       return repsResponse(rep);
   });
 
-  return Promise.all(reps).then(repsArray => ({representatives: repsArray, state: districtObject.state,district: districtObject.district,}))
+  return Promise.all(reps).then(repsArray => ({representatives: repsArray, state: districtObject.state,district: districtObject.district}))
 }
 
 representativeRouter.post('/', jsonBodyParser, (req, res, next) => {
