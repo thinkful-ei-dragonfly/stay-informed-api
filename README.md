@@ -227,6 +227,77 @@ Response:
 
 #### News API
 
+We have integrated the newsapi node package as part of this project. It uses the names of each returned
+representative to query a wide array of news sources
+
+For example:
+Top headlines about Kamala Harris
+
+`GET https://newsapi.org/v2/top-headlines?q=Kamala%20Harris&apiKey=${API_KEY}`
+
+
+Response: 
+```
+{
+    "status": "ok",
+    "totalResults": 6600,
+    "articles": [
+        {
+            "source": {
+                "id": "the-new-york-times",
+                "name": "The New York Times"
+            },
+            "author": null,
+            "title": "What Does Kamala Harris Stand For?",
+            "description": "As the Democratic senator emerges as a leading presidential contender, her vision for the country has remained difficult to define.",
+            "url": "https://www.nytimes.com/2019/07/31/podcasts/the-daily/kamala-harris.html",
+            "urlToImage": "https://static01.nyt.com/images/2019/07/31/business/31DAILY/31DAILY-facebookJumbo.jpg",
+            "publishedAt": "2019-07-31T10:11:53Z",
+            "content": "Alexander Burns contributed reporting.\r\nThe Daily is made by Theo Balcomb, Andy Mills, Lisa Tobin, Rachel Quester, Lynsea Garrison, Annie Brown, Clare Toeniskoetter, Paige Cowett, Michael Simon Johnson, Brad Fisher, Larissa Anderson, Wendy Dorr, Chris Wood, J… [+338 chars]"
+        },
+        {
+            "source": {
+                "id": null,
+                "name": "Lifehacker.com"
+            },
+            "author": "Josh Ocampo",
+            "title": "How to Watch the Presidential Democratic Debates Tonight",
+            "description": "Tonight, the second round of Presidential Democratic debates kicks off in Detroit, with top-polling candidates including Vermont Senator Bernie Sanders, South Bend Mayor Pete Buttigieg, and Massachusetts Senator Elizabeth Warren taking the stage. Meanwhile, f…",
+            "url": "https://lifehacker.com/how-to-watch-the-presidential-democratic-debates-tonigh-1836733018",
+            "urlToImage": "https://i.kinja-img.com/gawker-media/image/upload/s--Ra0OVDbn--/c_fill,fl_progressive,g_center,h_900,q_80,w_1600/x6bibug0bw0i4o6pie8w.jpg",
+            "publishedAt": "2019-07-30T13:00:00Z",
+            "content": "Tonight, the second round of Presidential Democratic debates kicks off in Detroit, with top-polling candidates including Vermont Senator Bernie Sanders, South Bend Mayor Pete Buttigieg, and Massachusetts Senator Elizabeth Warren taking the stage. Meanwhile, f… [+1827 chars]"
+        },
+        {
+            "source": {
+                "id": "the-new-york-times",
+                "name": "The New York Times"
+            },
+            "author": "Inyoung Kang",
+            "title": "Sausalito Marin City Schools to Desegregate After State Inquiry",
+            "description": "Monday: Also, Kamala Harris pivots to Iowa, and a former inmate runs to put San Quentin behind him.",
+            "url": "https://www.nytimes.com/2019/08/12/us/sausalito-marin-school-segregation.html",
+            "urlToImage": "https://static01.nyt.com/images/2019/08/09/us/12caltoday-sausalito/merlin_153657105_c2c3830d-0274-4d8a-98a0-e37e4c6bdd00-facebookJumbo.jpg",
+            "publishedAt": "2019-08-12T12:47:23Z",
+            "content": "Depriving a child of a fair chance to learn is wicked, its warped, its morally bankrupt, and its corrupt, Attorney General Xavier Becerra said on Friday. Your skin color or ZIP code should not determine winners and losers.\r\n[See our correspondents full story … [+1449 chars]"
+        },
+        {
+            "source": {
+                "id": "cnn",
+                "name": "CNN"
+            },
+            "author": null,
+            "title": "Kamala Harris reacts to Biden's remark",
+            "description": "Senator Kamala Harris (D-CA) reacts to former Vice President Joe Biden telling her \"Go easy on me, kid\" during the CNN Democratic debate.",
+            "url": "https://www.cnn.com/videos/politics/2019/07/31/kamala-harris-reacts-to-biden-go-easy-on-me-kid-cnn-democratic-debate-vpx.cnn",
+            "urlToImage": "https://cdn.cnn.com/cnnnext/dam/assets/190801000438-kamala-harris-post-debate-super-tease.jpg",
+            "publishedAt": "2019-08-01T04:17:07Z",
+            "content": "Chat with us in Facebook Messenger. Find out what's happening in the world as it unfolds."
+        }
+	]
+}
+```
+
 ## Configuring Database
 
 Stay Informed keeps a database of users and addresses to look up and store congressional districts. Use the following settings when configuring a PostgreSQL database.
