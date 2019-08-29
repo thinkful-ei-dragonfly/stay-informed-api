@@ -7,6 +7,8 @@ const RepresentativeService = {
     let stateCode;
     let districtCode;
     let districtObj;
+    let ocdData1;
+    let ocdData2;
 
     return fetch(
       `${config.CIVIC_API_URL}?key=${config.CIVIC_API_KEY}&address=${address}`
@@ -29,6 +31,15 @@ const RepresentativeService = {
             district: districtCode,
           };
         }
+        if(response.divisions) {
+          ocdData1 = response.divisions;
+
+          districtObj = { ...districtObj,
+            ocdData: ocdData1,
+          }
+        }
+        console.log('== districtObj ==\n');
+        console.log(districtObj);
         return districtObj;
       });
   },
