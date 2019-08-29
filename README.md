@@ -187,7 +187,43 @@ Response:
    ]
 }
 ```
+##### House
 
+`GET https://api.propublica.org/congress/v1/members/house/${state}/${districtCode}/current.json`
+
+Header must be `x-api-key`: `${process.env.PROPUBLICA_API_KEY}`
+
+
+Response:
+
+```
+{
+   "status": "OK",
+   "copyright": "Copyright (c) 2019 Pro Publica Inc. All Rights Reserved.",
+   "results": [
+      {
+         "id": "K000210",
+         "name": "Peter T. King",
+         "first_name": "Peter",
+         "middle_name": "T.",
+         "last_name": "King",
+         "suffix": null,
+         "role": "Representative",
+         "gender": "M",
+         "party": "R",
+         "times_topics_url": null,
+         "twitter_id": "RepPeteKing",
+         "facebook_account": "",
+         "youtube_id": "RepPeterKing",
+         "seniority": "28",
+         "next_election": "2020",
+         "api_uri": "https://api.propublica.org/congress/v1/members/K000210.json",
+         "district": "2",
+         "at_large": false
+      }
+   ]
+}
+```
 
 ## Configuring Database
 
