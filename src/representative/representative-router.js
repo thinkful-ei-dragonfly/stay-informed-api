@@ -12,8 +12,14 @@ async function getAll(address) {
 
   let districtObject = await RepresentativeService.getDistrict(address);
 
-  if(!districtObject || !districtObject.state || !districtObject.district) {
+  if(!districtObject || !districtObject.state || !districtObject.district) { 
+    const st = districtObject.state.toLowerCase();
+    if(!st || !['ak', 'de', 'mt','nd','sd','vt','wy'].includes(st)){
     throw new Error("We couldn't find your district");
+    } else{
+      districtObject.district = 1;
+    }
+    
   }
 
   let representatives = await ProPublicaService.getReps(districtObject.state, districtObject.district);
