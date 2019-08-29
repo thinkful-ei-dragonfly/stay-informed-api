@@ -32,7 +32,7 @@ const RepresentativeService = {
           };
         }
         if(response.divisions) {
-          ocdData1 = response.divisions;
+          ocdData1 = JSON.stringify(response.divisions).toLowerCase();
 
           districtObj = { ...districtObj,
             ocdData: ocdData1,
