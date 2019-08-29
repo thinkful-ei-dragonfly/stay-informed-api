@@ -225,6 +225,8 @@ Response:
 }
 ```
 
+#### News API
+
 ## Configuring Database
 
 Stay Informed keeps a database of users and addresses to look up and store congressional districts. Use the following settings when configuring a PostgreSQL database.
