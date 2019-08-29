@@ -28,7 +28,7 @@ app.use('/api/finances', financeRouter);
 
 
 app.get('/', (req, res) => {
-  res.send('Hello, from Lucas deployment!');
+  res.send('Hello, world!');
 });
 
 

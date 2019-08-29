@@ -20,6 +20,61 @@ env MIGRATION_DB_NAME=stay-informed-test npm run migrate
 
 And `npm test` should work at this point
 
+## Configuring API Keys
+
+Stay Informed leverages the [Open Secrets API](https://opensecrets.org/open-data/api-documentation), [News API](https://www.npmjs.com/package/newsapi), [Google Civics API](https://developers.google.com/civic-information/), and [ProPublica Congress API](https://www.propublica.org/datastore/api/propublica-congress-api)
+
+Sign up for API keys and save them to your `.env` file using the following variable names so they can be referenced in the `config.js` and other services:
+
+#### Civics API
+
+* `CIVIC_API_KEY`
+* `CIVIC_API_URL="https://www.googleapis.com/civicinfo/v2/representatives"`
+
+#### ProPublica
+
+* `PROPUBLICA_API_KEY`
+
+#### News API
+
+* `NEWS_API_KEY`
+
+#### Open Secrets
+
+* `OPEN_SECRETS_API_KEY`
+
+
+## Configuring Database
+
+Stay Informed keeps a database of users and addresses to look up and store congressional districts. Use the following settings when configuring a PostgreSQL database.
+
+_Note: Passwords are hashed using [bcrypt](https://www.npmjs.com/package/bcrypt) and base64_
+
+### Table Settings
+
+* After creating a PostreSQL database, create a table with name `user`
+* Set the following properties on the table:
+
+```
+DROP TABLE IF EXISTS public."user";
+
+CREATE TABLE public."user" (
+	id serial NOT NULL,
+	username text NOT NULL,
+	"password" text NOT NULL,
+	"name" text NOT NULL,
+	address text NULL,
+	CONSTRAINT user_pkey PRIMARY KEY (id),
+	CONSTRAINT user_username_key UNIQUE (username)
+);
+
+```
+
+
+### Environmental Variable
+
+In your `.env` file, save the database location as `DB_URL`
+
 ## Configuring Postgres
 
 For tests involving time to run properly, configure your Postgres database to run in the UTC timezone.
@@ -38,6 +93,8 @@ datestyle = 'iso, mdy'
 timezone = 'UTC'
 #timezone_abbreviations = 'Default'     # Select the set of available time zone
 ```
+
+
 
 ## Scripts
 
