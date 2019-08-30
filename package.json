@@ -1,6 +1,6 @@
 {
   "name": "stay-informed-api",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "license": "MIT",
   "author": "Michael Bravo, Michael Dusaniwskyj, Dustin Haefele, Lucas Vocos, Robert Wiggins",
   "description": "Server for the StayInformed political representative information website.",
