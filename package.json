@@ -1,7 +1,9 @@
 {
   "name": "stay-informed-api",
   "version": "0.0.2",
-  "description": "",
+  "license": "MIT",
+  "author": "Michael Bravo, Michael Dusaniwskyj, Dustin Haefele, Lucas Vocos, Robert Wiggins",
+  "description": "Server for the StayInformed political representative information website.",
   "main": "src/server.js",
   "scripts": {
     "test": "mocha --require test/setup.js",
@@ -13,8 +15,6 @@
     "deploy": "git push heroku master"
   },
   "keywords": [],
-  "author": "",
-  "license": "MIT",
   "dependencies": {
     "bcrypt": "^3.0.6",
     "bcryptjs": "^2.4.3",
