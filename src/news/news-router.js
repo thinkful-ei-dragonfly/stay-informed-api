@@ -37,7 +37,7 @@ newsRouter.post('/', jsonBodyParser, (req, res, next) => {
       q: queryString,
       excludeDomains,
       language: 'en',
-      sortBy: 'relevance',
+      sortBy: 'top',
       page: 1,
     })
     .then(response => {
