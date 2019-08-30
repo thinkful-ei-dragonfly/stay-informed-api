@@ -18,7 +18,7 @@ newsRouter.post('/', jsonBodyParser, (req, res, next) => {
   } = req.body;
 
   if(!senator1_first && !senator1_last && !senator2_first && !senator2_last && !representative1_first && !representative1_last){
-    return res.status(400).json({error: 'No representatives recieved to find news'});
+    return res.status(400).json({error: 'No representatives received to find news'});
   }
   // build custom search query to only pull exact match for full name for each representative
   const queryString = `(${senator1_first} AND ${senator1_last}) OR 
@@ -28,7 +28,9 @@ newsRouter.post('/', jsonBodyParser, (req, res, next) => {
   // Remove other unrelated sites that commonly give false positives
   const excludeDomains = `gizmodo.com, cnet.com, techcrunch.com, businessinsider.com, usatoday.com, 
     insider.com, thedrive.com, rockpapershotgun.com, marginalrevolution.com, marketwatch.com, 
-    mapleleafshotstove.com, androidcentral.com, bnnbloomberg.ca, venturebeat.com, slashdot.org`;
+    mapleleafshotstove.com, androidcentral.com, bnnbloomberg.ca, venturebeat.com, slashdot.org,
+    mashable.com, espn.com, thenextweb.com, screenrant.com, indianexpress.com, windowscentral.com, mcsweeneys.net,
+    gsmarena.com`;
 
   newsapi.v2
     .everything({

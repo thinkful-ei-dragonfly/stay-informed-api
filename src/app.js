@@ -27,9 +27,7 @@ app.use('/api/news', newsRouter);
 app.use('/api/finances', financeRouter);
 
 
-app.get('/', (req, res) => {
-  res.send('Hello, world!');
-});
+
 
 
 app.use(errorHandler);

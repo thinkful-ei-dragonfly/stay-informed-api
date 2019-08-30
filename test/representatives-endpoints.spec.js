@@ -5,7 +5,7 @@ const helpers = require('./test-helpers');
 describe('Representative Endpoints', function() {
   const testAddress = '2122 Blazing Star Drive, Tipp City, OH 45371';
   //Increasing the timeout because the three chained api calls take some time.
-  this.timeout(10000);
+  this.timeout(3000);
   describe(`POST /api/representatives`, () => { 
     it(`responds 400 and with correct error when address key provided but no value`, () => {
       return supertest(app)
@@ -34,9 +34,6 @@ describe('Representative Endpoints', function() {
             expect(rep.first_name).to.eql(helpers.expectedResponse.representatives[idx].first_name);
             expect(rep.photoUrl).to.eql(helpers.expectedResponse.representatives[idx].photoUrl);
             expect(rep.smallPhotoUrl).to.eql(helpers.expectedResponse.representatives[idx].smallPhotoUrl);
-            expect(rep.topContributors).to.eql(helpers.expectedResponse.representatives[idx].topContributors);
-            expect(rep.topIndrustries).to.eql(helpers.expectedResponse.representatives[idx].topIndrustries);
-            expect(rep.contributionTotals).to.eql(helpers.expectedResponse.representatives[idx].contributionTotals);
           });
 
         })
